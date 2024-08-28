@@ -1,5 +1,5 @@
 ﻿import gradio as gr
-from functions.functions import get_themes
+from functions.functions import get_theme
 
 
 
@@ -16,7 +16,7 @@ def main():
                         subtitles_path = gr.Textbox(label= 'Subtitles or script Path')
                         save_path = gr.Textbox(label= 'Save Path')
                         get_themes_button = gr.Button("Get Themes") 
-                        get_themes_button.click(get_themes , inputs=[theme_list , subtitles_path , save_path] , outputs=[plot])
+                        get_themes_button.click(get_theme , inputs=[theme_list , subtitles_path , save_path] , outputs=[plot])
     iface.launch(share=True)
       
     
