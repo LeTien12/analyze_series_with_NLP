@@ -23,5 +23,6 @@ def get_themes(theme_list , subtitles_path , save_path):
         width= 500,
         height= 250
     )
+    return output_chart
     
     
