@@ -9,13 +9,13 @@ from nltk import sent_tokenize
 from pathlib import Path
 folder_path = Path(__file__).parent.resolve()
 sys.path.append(os.path.join(folder_path , '/..'))
-from utils import load_data
+from utils.load_data import load_file_subtitles
 
 nltk.download('punkt')
 class ThemeClassifier():
     def __init__(self , theme_list):
         self.model_name = 'facebook/bart-large-mnli'
-        self.devide = 0 if torch.cuda.is_available() else 'cpu'
+        self.device = 0 if torch.cuda.is_available() else 'cpu'
         self.theme_list = theme_list
         self.theme_classifier = self.load_mode(self.device)
         
@@ -61,7 +61,7 @@ class ThemeClassifier():
             df = df.read_csv(save_path)
             return df
         
-        df = load_data(dataset_path)
+        df = load_file_subtitles(dataset_path)
         
         output_themes = df['script'].apply(self.get_themes_inference)
         

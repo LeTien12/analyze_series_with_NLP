@@ -1,10 +1,11 @@
-﻿import glob
+﻿import os
+import glob
+
 import pandas as pd
 
 
-
 def load_file_subtitles(path_data):
-    subtitles_path = glob.glob(path_data)
+    subtitles_path = glob.glob(os.path.join(path_data , '*ass'))
     numbers= []
     scripts = []
     
