@@ -10,3 +10,5 @@ tf-keras
 gradio == 4.36.1
 matplotlib
 seaborn
+spacy
+pyvis == 0.3.2

@@ -8,7 +8,7 @@ from transformers import pipeline
 from nltk import sent_tokenize
 from pathlib import Path
 folder_path = Path(__file__).parent.resolve()
-sys.path.append(os.path.join(folder_path , '/..'))
+sys.path.append(os.path.join(folder_path , '../'))
 from utils.load_data import load_file_subtitles
 
 nltk.download('punkt')

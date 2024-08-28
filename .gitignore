@@ -2,5 +2,7 @@
 *.pyc
 *.ipynb_checkpoints
 *__pycache__/
-dataset/
 theme_classification_development.ipynb
+charater_network_generator.ipynb
+output/
+

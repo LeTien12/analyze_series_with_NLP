@@ -1,5 +1,6 @@
 ﻿import gradio as gr
 from theme_classifier.themes_classifier import ThemeClassifier
+from character_network import NamedEntityRecognize , CharaterNetworkGennerator
 
 
 def get_theme(theme_list , subtitles_path , save_path):
@@ -25,5 +26,14 @@ def get_theme(theme_list , subtitles_path , save_path):
         height= 250
     )
     return output_chart
+
+def get_character_network(subtitles_path , ner_path):
+    ner = NamedEntityRecognize()
+    ner_df = ner.get_ners(subtitles_path , ner_path)
+    
+    character_network_generator = CharaterNetworkGennerator()
+    relationship_df = character_network_generator.generate_chasracter_network(ner_df)
+    html = character_network_generator.draw_network_graph(relationship_df)
+    return html
     
     
