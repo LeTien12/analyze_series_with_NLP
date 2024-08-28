@@ -2,5 +2,5 @@
 *.pyc
 *.ipynb_checkpoints
 *__pycache__/
-dataset
+dataset/
 theme_classification_development.ipynb
