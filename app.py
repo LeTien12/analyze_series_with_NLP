@@ -1,11 +1,10 @@
 ﻿import gradio as gr
-from functions import get_theme , get_character_network , classify_text
-import promt
+from functions import get_theme , get_character_network , classify_text , chat_with_chatbot
 
 
 
 def main():
-    text = promt.promt()
+
     with gr.Blocks() as iface:
         with gr.Row():
             with gr.Column():
@@ -42,10 +41,17 @@ def main():
                         text_classification_output  = gr.Textbox(label= 'Text Classification Output')
                     with gr.Column():
                         text_classification_model = gr.Textbox(label='Model Path' , value= r'Tienle123/NLP')
-                        text_classification_data_path = gr.Textbox(label="Data Path" , value=r'D:\hoc_lap_trinh\NLP\build_ai_NLP\dataset\jutsus.jsonl')
-                        text_to_classify = gr.Textbox(label="Text Input" , value= text)
+                        text_classification_data_path = gr.Textbox(label="Data Path" )
+                        text_to_classify = gr.Textbox(label="Text Input")
                         classify_text_button = gr.Button("Classify Text (Jutsu)")
                         classify_text_button.click(classify_text , inputs=[text_classification_model , text_classification_data_path, text_to_classify] , outputs=[text_classification_output])
+    
+        with gr.Row():
+            with gr.Column():
+                gr.HTML("<h1> ChatBot </h1>")
+                gr.ChatInterface(chat_with_chatbot)
+        
+        
     iface.launch(share=True)
       
     

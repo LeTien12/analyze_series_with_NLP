@@ -1,14 +1,12 @@
 ﻿import gradio as gr
 import os
-
 from dotenv import load_dotenv
-
-
-load_dotenv('../.env')
-
 from theme_classifier import ThemeClassifier
 from character_network import NamedEntityRecognize , CharaterNetworkGennerator
 from text_classifier import JutsuClassifier
+from chatbot import CharacterChatBot
+
+load_dotenv('../.env')
 
 
 def get_theme(theme_list , subtitles_path , save_path):
@@ -50,7 +48,18 @@ def classify_text(text_classification_model , text_classification_data_path, tex
                                        huggingface_token= os.getenv('HUGGINGFACE_TOKEN'))
     output = jutsu_classifier.classify_jutsu(text_to_classify)
     
+    output = output[0]
+    
     return output
+
+def chat_with_chatbot(message , history):
+    chatbot = CharacterChatBot('Tienle123/ChatBotNaruto',
+                               huggingface_token= os.getenv('HUGGINGFACE_TOKEN'))
+    
+    output = chatbot.chat(message , history)
+    output = output['content'].strip()
+    return output
+    
 
 
     
