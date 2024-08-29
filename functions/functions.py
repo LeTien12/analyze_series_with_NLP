@@ -1,6 +1,14 @@
 ﻿import gradio as gr
-from theme_classifier.themes_classifier import ThemeClassifier
+import os
+
+from dotenv import load_dotenv
+
+
+load_dotenv('../.env')
+
+from theme_classifier import ThemeClassifier
 from character_network import NamedEntityRecognize , CharaterNetworkGennerator
+from text_classifier import JutsuClassifier
 
 
 def get_theme(theme_list , subtitles_path , save_path):
@@ -35,5 +43,16 @@ def get_character_network(subtitles_path , ner_path):
     relationship_df = character_network_generator.generate_chasracter_network(ner_df)
     html = character_network_generator.draw_network_graph(relationship_df)
     return html
+
+def classify_text(text_classification_model , text_classification_data_path, text_to_classify):
+    jutsu_classifier = JutsuClassifier(model_path= text_classification_model , 
+                                       data_path=text_classification_data_path,
+                                       huggingface_token= os.getenv('HUGGINGFACE_TOKEN'))
+    output = jutsu_classifier.classify_jutsu(text_to_classify)
+    
+    return output
+
+
+    
     
     

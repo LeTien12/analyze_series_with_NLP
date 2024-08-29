@@ -1,8 +1,11 @@
 ﻿env
+.env
 *.pyc
 *.ipynb_checkpoints
 *__pycache__/
 theme_classification_development.ipynb
 charater_network_generator.ipynb
+jutsu_classfier.ipynb
 output/
+
 

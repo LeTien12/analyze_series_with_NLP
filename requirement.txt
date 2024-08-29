@@ -12,3 +12,7 @@ matplotlib
 seaborn
 spacy
 pyvis == 0.3.2
+scikit-learn
+datasets
+evaluate == 0.4.2
+python-dotenv
