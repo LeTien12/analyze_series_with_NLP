@@ -19,7 +19,7 @@ from trl import SFTConfig , SFTTrainer
 
 class CharacterChatBot():
     def __init__(self , model_path, 
-                 data_path = 'content/data/naruto.csv', 
+                 data_path = '/content/analyze_series_with_NLP/dataset/naruto.csv', 
                  huggingface_token = None):
         
         self.model_path = model_path
@@ -32,12 +32,12 @@ class CharacterChatBot():
             huggingface_hub.login(self.huggingface_token)
             
         if huggingface_hub.repo_exists(self.model_path):
-            self.model = self.load_mode(self.model_path)
+            self.model = self.load_model()
         else:
             train_dataset = self.load_data()
             
             self.train(self.base_model_path , train_dataset)
-            self.model = self.load_model(self.model_path)
+            self.model = self.load_model()
             
     def chat(self , message , history):
         messages = []
@@ -56,7 +56,7 @@ class CharacterChatBot():
         output = self.model(
             messages,
             max_length = 256,
-            terimator = terimator,
+            eos_token_id=terimator,
             do_sample = True,
             top_p = 0.9
         )
@@ -69,15 +69,14 @@ class CharacterChatBot():
         bnb_config = BitsAndBytesConfig(
             load_in_4bit = True,
             bnb_4bit_quant_type = 'nf4',
-            bnb_4bit_compute_dtupe = torch.float16
+            bnb_4bit_compute_dtype = torch.float16
         )
         
         pipeline = transformers.pipeline("text-generation",
-                                         model = self.model_path,
-                                         model_kwargs={
-                                             "torch_dtype" : torch.float16,
-                                             "quantization_config" : bnb_config,
-                                         })
+                                         model = self.model_path,                                 
+                                        torch_dtype = torch.float16,
+                                        quantization_config = bnb_config)
+                                         
         return pipeline
            
     def train(self , base_model_name_or_path ,
@@ -96,7 +95,7 @@ class CharacterChatBot():
         bnb_config = BitsAndBytesConfig(
             load_in_4bit = True,
             bnb_4bit_quant_type = 'nf4',
-            bnb_4bit_compute_dtupe = torch.float16
+            bnb_4bit_compute_dtype = torch.float16
         )
         model = AutoModelForCausalLM.from_pretrained(base_model_name_or_path,
                                                      quantization_config = bnb_config,
@@ -116,7 +115,7 @@ class CharacterChatBot():
             lora_dropout= lora_dropout,
             r = lora_r,
             bias= 'none',
-            task_type = "CASUAL_LM"
+            task_type = "CAUSAL_LM"
         )
         training_arguments = SFTConfig(
         output_dir = output_dir,
@@ -138,7 +137,7 @@ class CharacterChatBot():
         trainer = SFTTrainer(
             model=model,
             train_dataset=dataset,
-            perf_config = peft_config,
+            peft_config = peft_config,
             dataset_text_field='prompt',
             max_seq_length=max_seq_len,
             tokenizer=tokenizer,
